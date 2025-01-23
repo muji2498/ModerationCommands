@@ -1,0 +1,19 @@
+﻿# Moderation Commands - Nuclear Option
+
+## Bepinex Version
+This mod requires bepinex version [5.4.23.2](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.2) and NewtonsoftJson
+
+## Notes
+The mod will reply back showing the calling players name, i intend to replace this with something like `Server` or `Host`, this could be a configurable name aswell.
+
+# Built in commands
+`kick playername|steamid` (Owner | Admin | Moderator) - Will kick the player specified. <br>
+`ban playername|steamid` (Owner | Admin | Moderator) - Will ban the player specified. <br>
+`unban playername|steamid` (Owner | Admin | Moderator) - Will unban the player specified. <br>
+`setfps` (Owner) - Will set the fps of the server. <br>
+`select number|cancel` (Owner | Admin | Moderator) - command used to select the player, selection can be cancelled by typing cancel
+
+## Building Project
+
+Change `<GameDir>YourGameDirectoryHere</GameDir>` inside GameDir.targets to the install location of your game. <br>
+Example: `<GameDir>C:\Program Files (x86)\Steam\steamapps\common\Nuclear Option</GameDir>`
