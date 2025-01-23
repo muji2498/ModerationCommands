@@ -92,28 +92,19 @@ public class Plugin : BaseUnityPlugin
     {
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: [unban playername|steamid]", context.Player, false);
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: [unban steamid]", context.Player, false);
             return;
         }
 
         var callingPlayer = context.Player;
         var targetPlayer = args[0];
-        
-        var playersToBan = Utils.IdentifyPlayer(targetPlayer);
-        if (playersToBan == null || playersToBan.Count == 0)
-        {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Player not found.", callingPlayer, false);
-            return;
-        }
-        
-        if (playersToBan.Count == 1)
-        {
-            var playerToBan = playersToBan.First();
-            UnbanPlayer(playerToBan.SteamID, callingPlayer);
-            return;
-        }
 
-        AddToSelection(callingPlayer, "unban", playersToBan);
+        if (!ulong.TryParse(targetPlayer, out var steamId))
+        {
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Please use a numeric value.", context.Player, false);
+            return;
+        }
+        UnbanPlayer(steamId, callingPlayer);
     }
 
     [ConsoleCommand("select", Roles.Owner | Roles.Admin | Roles.Moderator)]
