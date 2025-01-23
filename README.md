@@ -9,7 +9,7 @@ The mod will reply back showing the calling players name, i intend to replace th
 # Built in commands
 `kick playername|steamid` (Owner | Admin | Moderator) - Will kick the player specified. <br>
 `ban playername|steamid` (Owner | Admin | Moderator) - Will ban the player specified. <br>
-`unban playername|steamid` (Owner | Admin | Moderator) - Will unban the player specified. <br>
+`unban steamid` (Owner | Admin | Moderator) - Will unban the player specified. <br>
 `setfps` (Owner) - Will set the fps of the server. <br>
 `select number|cancel` (Owner | Admin | Moderator) - command used to select the player, selection can be cancelled by typing cancel
 
