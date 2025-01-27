@@ -26,7 +26,7 @@ public class UnitPartPatches
             // check if unit is player or not
             var damagerPlayer = damager.player;
             var isPlayerDamage = victim.player != null;
-            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer);
+            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance.parentUnit);
             return true;
         }
     }

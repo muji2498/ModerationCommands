@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "1.0.1")]
+[BepInPlugin("me.muj.moderation", "Moderation", "1.0.2")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;

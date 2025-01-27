@@ -33,7 +33,7 @@ public class UnitPatches
 
             var damagerPlayer = highestDamagerUnit.player;
             var isPlayerDamage = killedUnit.player != null;
-            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer);
+            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
             
             return true;
         }
