@@ -56,4 +56,9 @@ public class PlayerUtils
         var incidentType = isPlayerDamage ? "player" : "unit";
         ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire ({incidentType}) incident. Incident count: {incidentCount}.");
     }
+
+    public static void ClearKickedPlayers()
+    {
+        _kickedPlayers.Clear();
+    }
 }
