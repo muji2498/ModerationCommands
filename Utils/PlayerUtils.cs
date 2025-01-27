@@ -42,8 +42,8 @@ public class PlayerUtils
         var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var steamId = GetSteamId(damagerPlayer);
         var message = isPlayerDamage
-            ? $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing `{victimUnit.unitName}`."
-            : $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for damaging `{victimUnit.unitName}`.";
+            ? $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing player `{victimUnit.unitName}`."
+            : $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing unit `{victimUnit.unitName}`.";
         DiscordWebhookHandler.SendToWebhook(message);
         ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {IncidentManager.GetIncidentCount(damagerPlayer)}");
         
