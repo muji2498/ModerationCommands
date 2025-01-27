@@ -1,4 +1,5 @@
-﻿using CommandMod;
+﻿using Banlist.Data;
+using CommandMod;
 using CommandMod.CommandHandler;
 
 namespace Moderation.Commands;
@@ -10,10 +11,9 @@ public class FriendlyFireCommands
     {
         if (bool.TryParse(args[0], out bool friendlyFireToggle))
         {
-            ModerationPlugin.Config.FriendlyFirePlayerKick.Value = friendlyFireToggle;
-            ModerationPlugin.Config.FriendlyFireUnitKick.Value = friendlyFireToggle;
+            ModerationPlugin.Config.Enabled.Value = false;
             var what = friendlyFireToggle ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Player friendly-fire and Unit friendly-fire: {what}", context.Player, false);
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"friendly-fire: {what}", context.Player, false);
         }
         else
         {
@@ -64,5 +64,26 @@ public class FriendlyFireCommands
         {
             Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: friendlyfire.unit true|false", context.Player, false);
         }
+    }
+    
+    [ConsoleCommand("friendlyfire.maxincidents", Roles.Owner | Roles.Admin)]
+    public static void FriendlyFireMaxIncidents(string[] args, CommandObjects context)
+    {
+        if (int.TryParse(args[0], out int amount))
+        {
+            ModerationPlugin.Config.FriendlyFireMaxIncidents.Value = amount;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"friendly-fire max incidents set to {amount}", context.Player, false);
+        }
+        else
+        {
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: friendlyfire.maxincidents amount", context.Player, false);
+        }
+    }
+    
+    [ConsoleCommand("friendlyfire.reset", Roles.Owner | Roles.Admin)]
+    public static void FriendlyFireMaxReset(string[] args, CommandObjects context)
+    {
+        IncidentManager.ClearIncidents();
+        Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Incidents cleared", context.Player, false);
     }
 }

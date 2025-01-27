@@ -21,4 +21,9 @@ public class IncidentManager
     {
         return _incidents[damager];
     }
+
+    public static void ClearIncidents()
+    {
+        _incidents.Clear();
+    }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using Banlist.Data;
 using HarmonyLib;
 using Moderation;
+using Moderation.Utils;
 using NuclearOption.Networking;
 
 namespace Banlist.Patches;
@@ -14,6 +15,7 @@ public class UnitPatches
     {
         static bool Prefix(Unit __instance)
         {
+            if (!ModerationPlugin.Config.Enabled.Value) return true;
             if (!ModerationPlugin.Config.KickOnKill.Value) return true;
             if (__instance == null) return true;
             
@@ -33,19 +35,8 @@ public class UnitPatches
             if (highestDamagerUnit.HQ != killedUnit.HQ) return true;
 
             var damagerPlayer = highestDamagerUnit.player;
-            if (damagerPlayer == null) return true;
-            
-            var incidentCount = IncidentManager.RecordDamageIncident(damagerPlayer);
-            if (incidentCount >= ModerationPlugin.Config.FriendlyFireMaxIncidents.Value)
-            {
-                NetworkManagerNuclearOption.i.KickPlayerAsync(damagerPlayer);
-                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {incidentCount}");
-            }
-            else
-            {
-                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire incident. Incident count: {incidentCount}");
-            }
-            
+            var isPlayerDamage = killedUnit.player != null;
+            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer);
             return true;
         }
     }

@@ -7,6 +7,7 @@ public class Config(ConfigFile file)
     public ConfigFile File { get; } = file;
     
     // General
+    public ConfigEntry<bool> Enabled { get; } = file.Bind("Moderation", "Enabled", true, "Toggle whether the plugin is enabled");
     public ConfigEntry<bool> KickOnKill { get; } = file.Bind("Moderation", "KickOnKill", true, "When true players will be kicked if they kill a player, if false they will be kicked when they damage a unit or player.");
     public ConfigEntry<bool> FriendlyFirePlayerKick { get; } = file.Bind("Moderation", "FriendlyPlayerFireKick", false, "When enabled players will be auto kicked if they damage/kill a friendly player.");
     public ConfigEntry<bool> FriendlyFireUnitKick { get; } = file.Bind("Moderation", "FriendlyUnitFireKick", false, "When enabled players will be auto kicked if they damage/kill a friendly unit.");
