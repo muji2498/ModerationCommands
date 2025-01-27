@@ -30,11 +30,26 @@
       <Reference Include="Assembly-CSharp">
         <HintPath>$(GameDir)\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
       </Reference>
+      <Reference Include="com.rlabrecque.steamworks.net">
+        <HintPath>$(GameDir)\NuclearOption_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
+      </Reference>
       <Reference Include="CommandMod">
         <HintPath>$(GameDir)\BepInEx\plugins\CommandMod.dll</HintPath>
       </Reference>
       <Reference Include="Mirage">
         <HintPath>$(GameDir)\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+      </Reference>
+      <Reference Include="Mirage.SocketLayer">
+        <HintPath>$(GameDir)\NuclearOption_Data\Managed\Mirage.SocketLayer.dll</HintPath>
+      </Reference>
+      <Reference Include="Mirage.SteamworksSocket">
+        <HintPath>$(GameDir)\NuclearOption_Data\Managed\Mirage.SteamworksSocket.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>$(GameDir)\BepInEx\plugins\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Net.Http">
+        <HintPath>$(GameDir)\NuclearOption_Data\Managed\System.Net.Http.dll</HintPath>
       </Reference>
       <Reference Include="UniTask">
         <HintPath>$(GameDir)\NuclearOption_Data\Managed\UniTask.dll</HintPath>
@@ -46,4 +61,8 @@
         <HintPath>$(GameDir)\NuclearOption_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="xcopy /Y /F &quot;$(TargetDir)Moderation.dll&quot; &quot;$(GameDir)\BepInEx\plugins&quot;" />
+    </Target>
 </Project>

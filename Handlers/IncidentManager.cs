@@ -1,0 +1,32 @@
+﻿using System.Collections.Generic;
+
+namespace Moderation.Handlers;
+
+public class IncidentManager
+{
+    private static Dictionary<Player, int> _incidents = new Dictionary<Player, int>();
+
+    public static int RecordDamageIncident(Player damager)
+    {
+        if (!_incidents.ContainsKey(damager))
+        {
+            _incidents.Add(damager, 0);
+        }
+        
+        _incidents[damager]++;
+        
+        DiscordWebhookHandler.SendToWebhook($"FriendlyFireIncident: Player: {damager.PlayerName} has friendly fired! Incident count: {_incidents[damager]}");
+        
+        return _incidents[damager];
+    }
+
+    public static int GetIncidentCount(Player damager)
+    {
+        return _incidents[damager];
+    }
+
+    public static void ClearIncidents()
+    {
+        _incidents.Clear();
+    }
+}
