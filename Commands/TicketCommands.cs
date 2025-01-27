@@ -11,12 +11,6 @@ public class TicketCommands
     public static void Ticket(string[] args, CommandObjects objects)
     {
         var callingPlayer = objects.Player;
-
-        if (string.IsNullOrEmpty(ModerationPlugin.Config.DiscordWebhook.Value))
-        {
-            Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Discord Webhook isn't set!", callingPlayer, false);
-            return;
-        }
         
         if (args.Length < 1)
         {

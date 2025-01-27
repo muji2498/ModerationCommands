@@ -14,6 +14,9 @@ public class IncidentManager
         }
         
         _incidents[damager]++;
+        
+        DiscordWebhookHandler.SendToWebhook($"FriendlyFireIncident: Player: {damager.PlayerName} has friendly fired! Incident count: {_incidents[damager]}");
+        
         return _incidents[damager];
     }
 

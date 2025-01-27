@@ -15,5 +15,5 @@ public class Config(ConfigFile file)
     
     // Discord Webhooks
     public ConfigEntry<string> DiscordWebhook { get; } = file.Bind("Moderation", "DiscordWebhook", "", "This is the url of the Discord Webhook.");
-    public ConfigEntry<string> MessagePrefix { get; } = file.Bind("Moderation", "MessagePrefix", "Tickets:", "This is the prefix the message will have.");
+    public ConfigEntry<string> MessagePrefix { get; } = file.Bind("Moderation", "MessagePrefix", "Tickets:", "This is the prefix the ticket message will have.");
 }

@@ -9,6 +9,12 @@ public class DiscordWebhookHandler
 {
     public static async void SendToWebhook(string message)
     {
+        if (string.IsNullOrEmpty(ModerationPlugin.Config.DiscordWebhook.Value))
+        {
+            ModerationPlugin.Logger.LogError($"DiscordWebhookHandler: No DiscordWebhook configured. Please configure it first.");
+            return;
+        }
+        
         using (var client = new HttpClient())
         {
             var payload = new
