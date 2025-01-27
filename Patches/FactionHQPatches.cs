@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Moderation.Handlers;
+using Moderation.Utils;
 
 namespace Moderation.Patches;
 
@@ -11,6 +12,7 @@ public class FactionHQPatches
         static void Postfix()
         {
             IncidentManager.ClearIncidents();
+            PlayerUtils.ClearKickedPlayers();
         }
     }
 }
