@@ -1,5 +1,5 @@
-﻿using Banlist.Data;
-using Mirage.SteamworksSocket;
+﻿using Mirage.SteamworksSocket;
+using Moderation.Handlers;
 using NuclearOption.Networking;
 
 namespace Moderation.Utils;
@@ -19,11 +19,11 @@ public class PlayerUtils
             if (incidentCount >= ModerationPlugin.Config.FriendlyFireMaxIncidents.Value)
             {
                 NetworkManagerNuclearOption.i.KickPlayerAsync(damagerPlayer);
-                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {incidentCount}");
+                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire (player) limit. Incident count: {incidentCount}");
             }
             else
             {
-                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire incident. Incident count: {incidentCount}");
+                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire (player) incident. Incident count: {incidentCount}");
             }
         }
         else if (!isPlayerDamage && ModerationPlugin.Config.FriendlyFireUnitKick.Value) // only care about unit damage
@@ -36,7 +36,7 @@ public class PlayerUtils
             }
             else
             {
-                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire (player) incident. Incident count: {incidentCount}");
+                ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire (unit) incident. Incident count: {incidentCount}");
             }
         }
     }

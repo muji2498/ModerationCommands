@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Banlist.Data;
 using HarmonyLib;
-using Moderation;
 using Moderation.Utils;
-using NuclearOption.Networking;
 
-namespace Banlist.Patches;
+namespace Moderation.Patches;
 
 public class UnitPatches
 {
@@ -37,6 +34,7 @@ public class UnitPatches
             var damagerPlayer = highestDamagerUnit.player;
             var isPlayerDamage = killedUnit.player != null;
             PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer);
+            
             return true;
         }
     }

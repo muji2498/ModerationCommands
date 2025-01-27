@@ -1,10 +1,7 @@
-﻿using Banlist.Data;
-using HarmonyLib;
-using Moderation;
+﻿using HarmonyLib;
 using Moderation.Utils;
-using NuclearOption.Networking;
 
-namespace Banlist.Patches;
+namespace Moderation.Patches;
 
 public class UnitPartPatches
 {
@@ -14,7 +11,7 @@ public class UnitPartPatches
         static bool Prefix(UnitPart __instance, int dealerID)
         {
             if (!ModerationPlugin.Config.Enabled.Value) return true;
-            if (ModerationPlugin.Config.KickOnKill.Value) return true;
+            if (ModerationPlugin.Config.KickOnKill.Value) return true; // when true kicks will happen units are killed not damaged
             if (__instance == null) return true;
             
             var victim = UnitRegistry.GetPersistentUnit(__instance.parentUnit.persistentID);

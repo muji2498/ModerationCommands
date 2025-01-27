@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using CommandMod;
+using HarmonyLib;
 
 namespace Moderation;
 
@@ -18,5 +19,8 @@ public partial class ModerationPlugin : BaseUnityPlugin
         // Plugin startup logic
         Logger = base.Logger;
         Logger.LogInfo($"Plugin me.muj.moderation is loaded!");
+        
+        var harmony = new Harmony("me.muj.moderation");
+        harmony.PatchAll();
     }
 }

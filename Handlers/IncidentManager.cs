@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Banlist.Data;
+namespace Moderation.Handlers;
 
 public class IncidentManager
 {

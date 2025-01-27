@@ -1,8 +1,7 @@
-﻿using System;
-using Banlist.Data;
-using HarmonyLib;
+﻿using HarmonyLib;
+using Moderation.Handlers;
 
-namespace Banlist.Patches;
+namespace Moderation.Patches;
 
 public class FactionHQPatches
 {
