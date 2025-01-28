@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Moderation.Data;
 using Moderation.Utils;
-using UnityEngine;
 
 namespace Moderation.Handlers;
 
@@ -23,6 +22,12 @@ public class IncidentManager
 
     public static int RecordDamageIncident(Player damager, Unit unit)
     {
+        if (damager == null || unit == null)
+        {
+            ModerationPlugin.Logger.LogError("RecordDamageIncident: damager or unit is null.");
+            return 0;
+        }
+        
         lock (_lock)
         {
             if (!_incidents.ContainsKey(damager))
@@ -30,56 +35,79 @@ public class IncidentManager
                 _incidents[damager] = new IncidentData
                 {
                     Player = damager,
-                    DamagedUnit = unit,
-                    KillCount = 0,
-                    DamageCount = 0,
                     LastReported = DateTime.UtcNow
                 };
             }
             
-            var incident = _incidents[damager];
+            var incidentData = _incidents[damager];
+            
+            if (!incidentData.UnitIncidents.ContainsKey(unit))
+            {
+                incidentData.UnitIncidents[unit] = new UnitIncident();
+            }
 
+            var unitIncident = incidentData.UnitIncidents[unit];
+            unitIncident.HasBeenReported = false;
+            
             // if kick on kill
             if (ModerationPlugin.Config.KickOnKill.Value)
             {
-                incident.KillCount++;
+                unitIncident.KillCount++;
                 // kill events don't get spammed so just send it
-                SendIncidentReport(incident);
+                SendIncidentReport(damager, unit, unitIncident);
             }
             // if kick on damage
             else
             {
-                incident.DamageCount++;
+                unitIncident.DamageCount++;
             }
-            return _incidents[damager].KillCount + incident.DamageCount;
+            return incidentData.UnitIncidents.Sum(kvp => kvp.Value.KillCount + kvp.Value.DamageCount);
         }
     }
     
     private static void SendBatchReport(object state)
     {
-        var friendlyFireOnUnits = _incidents.Where(kvp => kvp.Value.DamageCount > 0);
-        foreach (var pair in friendlyFireOnUnits)
+        lock (_lock)
         {
-            var unixTimestamp = new DateTimeOffset(pair.Value.LastReported).ToUnixTimeSeconds();
-            var message = $"Friendly Fire Incident: <t:{unixTimestamp}:F> Player: `{pair.Key.PlayerName}({PlayerUtils.GetSteamId(pair.Key)})` - ";
-            message += $"Damaged: `{pair.Value.DamagedUnit.unitName}` `{pair.Value.DamageCount}` time(s).";
-            DiscordWebhookHandler.SendToWebhook(message);
-            _incidents.Remove(pair.Key);
+            foreach (var playerIncident in _incidents.ToList()) // go through the player incidents
+            {
+                foreach (var unitIncident in playerIncident.Value.UnitIncidents) // go through their unit incidents
+                {
+                    var incident = unitIncident.Value;
+                    if (!incident.HasBeenReported && incident.DamageCount > 0)
+                    {
+                        var unixTimestamp = new DateTimeOffset(playerIncident.Value.LastReported).ToUnixTimeSeconds();
+                        var message = $"Friendly Fire Incident: <t:{unixTimestamp}:F> Player: `{playerIncident.Key.PlayerName}({PlayerUtils.GetSteamId(playerIncident.Key)})` - ";
+                        message += $"Damaged: `{unitIncident.Key.unitName}` `{incident.DamageCount}` time(s).";
+                        DiscordWebhookHandler.SendToWebhook(message);
+                        
+                        incident.HasBeenReported = true;
+                    }
+                }
+            }
         }
     }
 
-    private static void SendIncidentReport(IncidentData incident)
+    private static void SendIncidentReport(Player player, Unit unit, UnitIncident incident)
     {
-        var unixTimestamp = new DateTimeOffset(incident.LastReported).ToUnixTimeSeconds();
-        var message = $"Friendly Fire Incident: <t:{unixTimestamp}:F> Player: `{incident.Player.PlayerName}({PlayerUtils.GetSteamId(incident.Player)})` - ";
-        message += $"Killed: `{incident.DamagedUnit.unitName}`.";
+        var unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
+        var message = $"Friendly Fire Incident: <t:{unixTimestamp}:F> Player: `{player.PlayerName}({PlayerUtils.GetSteamId(player)})` - ";
+        message += $"Killed: `{unit.unitName}`.";
         
         DiscordWebhookHandler.SendToWebhook(message);
     }
 
     public static int GetIncidentCount(Player damager)
     {
-        return _incidents[damager].KillCount + _incidents[damager].DamageCount;
+        lock (_lock)
+        {
+            return _incidents[damager].UnitIncidents.Sum(kvp => kvp.Value.KillCount + kvp.Value.DamageCount);
+        }
+    }
+
+    public static void ClearIncidentForPlayer(Player damager)
+    {
+        _incidents.Remove(damager);
     }
 
     public static void ClearIncidents()

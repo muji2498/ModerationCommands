@@ -37,6 +37,8 @@ public class PlayerUtils
     
     private static void KickPlayer(Player damagerPlayer, Unit victimUnit, bool isPlayerDamage)
     {
+        var incidentCount = IncidentManager.GetIncidentCount(damagerPlayer);
+        IncidentManager.ClearIncidentForPlayer(damagerPlayer);
         NetworkManagerNuclearOption.i.KickPlayerAsync(damagerPlayer);
         
         var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
@@ -45,8 +47,7 @@ public class PlayerUtils
             ? $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing player `{victimUnit.unitName}`."
             : $"<t:{unixTimestamp}:F> Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing unit `{victimUnit.unitName}`.";
         DiscordWebhookHandler.SendToWebhook(message);
-        ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {IncidentManager.GetIncidentCount(damagerPlayer)}");
-        
+        ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {incidentCount}");
         _kickedPlayers.Add(damagerPlayer);
     }
     
@@ -54,7 +55,8 @@ public class PlayerUtils
     private static void LogIncident(Player damagerPlayer, int incidentCount, bool isPlayerDamage)
     {
         var incidentType = isPlayerDamage ? "player" : "unit";
-        ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire ({incidentType}) incident. Incident count: {incidentCount}.");
+        var shouldLog = incidentCount % 50 == 0;
+        if (shouldLog) ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire ({incidentType}) incident. Incident count: {incidentCount}.");
     }
 
     public static void ClearKickedPlayers()
