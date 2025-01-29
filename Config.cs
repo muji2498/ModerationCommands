@@ -12,6 +12,7 @@ public class Config(ConfigFile file)
     public ConfigEntry<bool> FriendlyFirePlayerKick { get; } = file.Bind("Moderation", "FriendlyPlayerFireKick", true, "When enabled players will be auto kicked if they damage/kill a friendly player.");
     public ConfigEntry<bool> FriendlyFireUnitKick { get; } = file.Bind("Moderation", "FriendlyUnitFireKick", true, "When enabled players will be auto kicked if they damage/kill a friendly unit.");
     public ConfigEntry<int> FriendlyFireMaxIncidents { get; } = file.Bind("Moderation", "FriendlyFireMaxIncidents", 10, "Number of incidents before player is kicked.");
+    public ConfigEntry<int> FriendlyUnitThreshold { get; } = file.Bind("Moderation", "FriendlyUnitThreshold", 5, "Number of units a player can kill before a incident is reported.");
     
     // Discord Webhooks
     public ConfigEntry<string> DiscordWebhook { get; } = file.Bind("Moderation", "DiscordWebhook", "", "This is the url of the Discord Webhook.");

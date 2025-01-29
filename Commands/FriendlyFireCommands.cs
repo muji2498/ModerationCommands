@@ -1,6 +1,7 @@
 ﻿using CommandMod;
 using CommandMod.CommandHandler;
 using Moderation.Handlers;
+using Moderation.Utils;
 
 namespace Moderation.Commands;
 
@@ -94,11 +95,29 @@ public class FriendlyFireCommands
             Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire max incidents set to {amount}", context.Player, false);
         }
     }
+    
+    [ConsoleCommand("friendlyfire.unitthreshold", Roles.Owner | Roles.Admin)]
+    public static void FriendlyFireUnitThreshold(string[] args, CommandObjects context)
+    {
+        if (args.Length < 1)
+        {
+            var currentValue = ModerationPlugin.Config.FriendlyUnitThreshold.Value;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.unitthreshold amount. Current Value: {currentValue}", context.Player, false);
+            return;
+        }
+        
+        if (int.TryParse(args[0], out int amount))
+        {
+            ModerationPlugin.Config.FriendlyUnitThreshold.Value = amount;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire unit threshold set to {amount}", context.Player, false);
+        }
+    }
 
     [ConsoleCommand("friendlyfire.reset", Roles.Owner | Roles.Admin)]
     public static void FriendlyFireMaxReset(string[] args, CommandObjects context)
     {
         IncidentManager.ClearIncidents();
+        PlayerUtils.ClearUnitKilled();
         Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Incidents cleared", context.Player, false);
     }
 }

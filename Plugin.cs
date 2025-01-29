@@ -5,7 +5,7 @@ using HarmonyLib;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "1.0.3")]
+[BepInPlugin("me.muj.moderation", "Moderation", "1.0.4")]
 [BepInDependency("me.muj.commandmod")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
