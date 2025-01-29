@@ -14,7 +14,6 @@ public class UnitPatches
         {
             
             if (!ModerationPlugin.Config.Enabled.Value) return true;
-            if (!ModerationPlugin.Config.KickOnKill.Value) return true;
             if (__instance == null) return true;
             
             var damageCredit = (Dictionary<int, float>) AccessTools.Field(typeof(Unit), "damageCredit").GetValue(__instance);
@@ -34,22 +33,7 @@ public class UnitPatches
             
             var damagerPlayer = highestDamagerUnit.player;
             var isPlayerDamage = killedUnit.player != null;
-
-            if (isPlayerDamage) 
-            {
-                PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
-                return true;
-            }
-            
-            PlayerUtils.AddUnitKilled(damagerPlayer, __instance);
-
-            // if its unit
-            var unitsKilled = PlayerUtils.GetUnitsKilled(damagerPlayer);
-            if (ModerationPlugin.Config.FriendlyUnitThreshold.Value == unitsKilled)
-            {
-                PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
-                return true;
-            }
+            PlayerUtils.ShouldKick(isPlayerDamage, damagerPlayer, __instance);
             return true;
         }
     }

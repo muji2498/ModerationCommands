@@ -25,24 +25,6 @@ public class FriendlyFireCommands
         }
     }
 
-    [ConsoleCommand("friendlyfire.kickonkill", Roles.Owner | Roles.Admin)]
-    public static void FriendlyFireOnKill(string[] args, CommandObjects context)
-    {
-        if (args.Length < 1)
-        {
-            var currentValue = ModerationPlugin.Config.KickOnKill.Value ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.kickonkill true|false. Current Value: {currentValue}", context.Player, false);
-            return;
-        }
-        
-        if (bool.TryParse(args[0], out bool friendlyFireToggle))
-        {
-            ModerationPlugin.Config.KickOnKill.Value = friendlyFireToggle;
-            var what = friendlyFireToggle ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire kick on kill: {what}", context.Player, false);
-        }
-    }
-
     [ConsoleCommand("friendlyfire.player", Roles.Owner | Roles.Admin)]
     public static void FriendlyFirePlayer(string[] args, CommandObjects context)
     {
@@ -79,19 +61,36 @@ public class FriendlyFireCommands
         }
     }
 
-    [ConsoleCommand("friendlyfire.maxincidents", Roles.Owner | Roles.Admin)]
-    public static void FriendlyFireMaxIncidents(string[] args, CommandObjects context)
+    [ConsoleCommand("friendlyfire.unitincidents", Roles.Owner | Roles.Admin)]
+    public static void UnitMaxIncidents(string[] args, CommandObjects context)
     {
         if (args.Length < 1)
         {
-            var currentValue = ModerationPlugin.Config.FriendlyFireMaxIncidents.Value;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.maxincidents amount. Current Value: {currentValue}", context.Player, false);
+            var currentValue = ModerationPlugin.Config.UnitMaxIncidents.Value;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.unitincidents amount. Current Value: {currentValue}", context.Player, false);
             return;
         }
         
         if (int.TryParse(args[0], out int amount))
         {
-            ModerationPlugin.Config.FriendlyFireMaxIncidents.Value = amount;
+            ModerationPlugin.Config.UnitMaxIncidents.Value = amount;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire max incidents set to {amount}", context.Player, false);
+        }
+    }
+    
+    [ConsoleCommand("friendlyfire.playerincidents", Roles.Owner | Roles.Admin)]
+    public static void PlayerMaxIncidents(string[] args, CommandObjects context)
+    {
+        if (args.Length < 1)
+        {
+            var currentValue = ModerationPlugin.Config.PlayerMaxIncidents.Value;
+            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.playerincidents amount. Current Value: {currentValue}", context.Player, false);
+            return;
+        }
+        
+        if (int.TryParse(args[0], out int amount))
+        {
+            ModerationPlugin.Config.PlayerMaxIncidents.Value = amount;
             Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire max incidents set to {amount}", context.Player, false);
         }
     }
@@ -117,7 +116,6 @@ public class FriendlyFireCommands
     public static void FriendlyFireMaxReset(string[] args, CommandObjects context)
     {
         IncidentManager.ClearIncidents();
-        PlayerUtils.ClearUnitKilled();
         Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Incidents cleared", context.Player, false);
     }
 }

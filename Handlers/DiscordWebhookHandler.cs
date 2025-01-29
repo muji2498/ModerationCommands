@@ -21,7 +21,7 @@ public class DiscordWebhookHandler
         BatchTimer = new Timer(SendBatch, null, BatchDelay, BatchDelay);
     }
     
-    public static async void SendToWebhook(string message)
+    public static void SendToWebhook(string message)
     {
         if (string.IsNullOrEmpty(ModerationPlugin.Config.DiscordWebhook.Value))
         {

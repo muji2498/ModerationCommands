@@ -14,10 +14,10 @@ The mod will reply back showing the calling players name, i intend to replace th
 `ticket` - Will send a ticket to the discord webhook. <br>
 `select number|cancel` (Owner | Admin | Moderator) - command used to select the player, selection can be cancelled by typing cancel <br>
 `friendlyfire` (Owner | Admin) - Will Toggle whether friendly fire should be on or off. <br>
-`friendlyfire.kickonkill` (Owner | Admin) - Will Toggle whether players should be kicked if they kill another player. <br>
 `friendlyfire.player` (Owner | Admin) - Will Toggle whether players should be kicked if they damage/kill players. <br>
 `friendlyfire.unit` (Owner | Admin) - Will Toggle whether players should be kicked if they damage/kill units. <br>
-`friendlyfire.maxincidents` (Owner | Admin) - Will modify the max amounts of incidents. <br>
+`friendlyfire.unitincidents` (Owner | Admin) - Will modify the max amounts of unit incidents. <br>
+`friendlyfire.playerincidents` (Owner | Admin) - Will modify the max amounts of player incidents. <br>
 `friendlyfire.unitthreshold` (Owner | Admin) - Will modify the amount of friendly units a player can kill before hitting a threshold. <br>
 `friendlyfire.reset` (Owner | Admin) - Will clear the incidents. <br>
 
