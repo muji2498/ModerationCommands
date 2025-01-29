@@ -18,6 +18,7 @@ The mod will reply back showing the calling players name, i intend to replace th
 `friendlyfire.player` (Owner | Admin) - Will Toggle whether players should be kicked if they damage/kill players. <br>
 `friendlyfire.unit` (Owner | Admin) - Will Toggle whether players should be kicked if they damage/kill units. <br>
 `friendlyfire.maxincidents` (Owner | Admin) - Will modify the max amounts of incidents. <br>
+`friendlyfire.unitthreshold` (Owner | Admin) - Will modify the amount of friendly units a player can kill before hitting a threshold. <br>
 `friendlyfire.reset` (Owner | Admin) - Will clear the incidents. <br>
 
 ## Building Project
