@@ -10,9 +10,37 @@ public class PlayerUtils
 {
     private static readonly List<Player> _kickedPlayers = new();
     
+    private static readonly Dictionary<Player, int> _unitsKilled = new();
+    
     public static ulong GetSteamId(Player callingPlayer)
     {
         return callingPlayer.Owner.Address is SteamEndPoint endpoint ? endpoint.Connection.SteamID.m_SteamID : 0;
+    }
+
+    public static void AddUnitKilled(Player player, Unit victim)
+    {
+
+        if (!_unitsKilled.ContainsKey(player))
+        {
+            _unitsKilled[player] = 1;
+            LogUnitIncident(player, victim);
+            return;
+        }
+        _unitsKilled[player]++;
+        LogUnitIncident(player, victim);
+    }
+
+    public static int GetUnitsKilled(Player player)
+    {
+        if (!_unitsKilled.ContainsKey(player))
+            return 0;
+        
+        return _unitsKilled[player];
+    }
+
+    public static void ClearUnitKilled()
+    {
+        _unitsKilled.Clear();
     }
     
     public static void ApplyKick(bool isPlayerDamage, Player damagerPlayer, Unit victimUnit)
@@ -57,6 +85,13 @@ public class PlayerUtils
         var incidentType = isPlayerDamage ? "player" : "unit";
         var shouldLog = incidentCount % 50 == 0;
         if (shouldLog) ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was logged for a friendly fire ({incidentType}) incident. Incident count: {incidentCount}.");
+    }
+
+    private static void LogUnitIncident(Player player, Unit victim)
+    {
+        var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+        var steamId = GetSteamId(player);
+        DiscordWebhookHandler.SendToWebhook($"<t:{unixTimestamp}:F> `{player.PlayerName}({steamId})` killed a friendly unit: `{victim.unitName}`. {_unitsKilled[player]}/{ModerationPlugin.Config.FriendlyUnitThreshold.Value}.");
     }
 
     public static void ClearKickedPlayers()

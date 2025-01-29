@@ -12,6 +12,7 @@ public class UnitPatches
     {
         static bool Prefix(Unit __instance)
         {
+            
             if (!ModerationPlugin.Config.Enabled.Value) return true;
             if (!ModerationPlugin.Config.KickOnKill.Value) return true;
             if (__instance == null) return true;
@@ -30,11 +31,25 @@ public class UnitPatches
 
             // not the same hq so move on
             if (highestDamagerUnit.HQ != killedUnit.HQ) return true;
-
+            
             var damagerPlayer = highestDamagerUnit.player;
             var isPlayerDamage = killedUnit.player != null;
-            PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
+
+            if (isPlayerDamage) 
+            {
+                PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
+                return true;
+            }
             
+            PlayerUtils.AddUnitKilled(damagerPlayer, __instance);
+
+            // if its unit
+            var unitsKilled = PlayerUtils.GetUnitsKilled(damagerPlayer);
+            if (ModerationPlugin.Config.FriendlyUnitThreshold.Value == unitsKilled)
+            {
+                PlayerUtils.ApplyKick(isPlayerDamage, damagerPlayer, __instance);
+                return true;
+            }
             return true;
         }
     }
