@@ -2,10 +2,11 @@
 using BepInEx.Logging;
 using CommandMod;
 using HarmonyLib;
+using Moderation.Handlers;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "2.0.0")]
+[BepInPlugin("me.muj.moderation", "Moderation", "2.0.1")]
 [BepInDependency("me.muj.commandmod")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
@@ -13,9 +14,15 @@ public partial class ModerationPlugin : BaseUnityPlugin
     
     public new static Config Config { get; private set; }
 
+    public static DiscordWebhookHandler FriendlyFireLogs;
+    public static DiscordWebhookHandler ModerationLogs;
+
     private void Awake()
     {
         Config = new Config(base.Config);
+
+        FriendlyFireLogs = new DiscordWebhookHandler(Config.FriendlyFireWebhook.Value);
+        ModerationLogs = new DiscordWebhookHandler(Config.ModerationWebhook.Value);
         
         // Plugin startup logic
         Logger = base.Logger;

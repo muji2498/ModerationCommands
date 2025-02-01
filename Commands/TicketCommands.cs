@@ -1,5 +1,6 @@
 ﻿using CommandMod;
 using CommandMod.CommandHandler;
+using CommandMod.Extensions;
 using Moderation.Handlers;
 using Moderation.Utils;
 
@@ -14,7 +15,7 @@ public class TicketCommands
         
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Usage: ticket <message>", callingPlayer, false);
+            objects.Player.SendChatMessage("Usage: ticket <message>");
             return;
         }
 
@@ -30,8 +31,8 @@ public class TicketCommands
         }
         
         ModerationPlugin.Logger.LogInfo($"Sending Ticket: {message} from {callingPlayer.PlayerName}");
-        Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Ticket sent!", callingPlayer, false);
+        objects.Player.SendChatMessage("Ticket sent!");
 
-        DiscordWebhookHandler.SendToWebhook(message);
+        ModerationPlugin.ModerationLogs.SendToWebhook(message);
     }
 }

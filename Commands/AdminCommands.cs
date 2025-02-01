@@ -1,5 +1,6 @@
 ﻿using CommandMod;
 using CommandMod.CommandHandler;
+using CommandMod.Extensions;
 using UnityEngine;
 
 namespace Moderation.Commands;
@@ -11,13 +12,13 @@ public class AdminCommands
     {
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: [setfps amount]", context.Player, false);
+            context.Player.SendChatMessage("Usage: [setfps amount]");
             return;
         }
 
         if (!int.TryParse(args[0], out int amount))
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Invalid amount. please use a numeric value", context.Player, false);
+            context.Player.SendChatMessage("Invalid amount. please use a numeric value");
             return;
         }
         

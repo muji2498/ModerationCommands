@@ -15,6 +15,7 @@ public class Config(ConfigFile file)
     public ConfigEntry<int> FriendlyUnitThreshold { get; } = file.Bind("Moderation", "FriendlyUnitThreshold", 5, "Number of units a player can kill before a incident is reported.");
     
     // Discord Webhooks
-    public ConfigEntry<string> DiscordWebhook { get; } = file.Bind("Moderation", "DiscordWebhook", "", "This is the url of the Discord Webhook.");
+    public ConfigEntry<string> FriendlyFireWebhook { get; } = file.Bind("Moderation", "FriendlyFireWebhook", "", "This is the url of the friendly fire Discord Webhook.");
+    public ConfigEntry<string> ModerationWebhook { get; } = file.Bind("Moderation", "ModerationWebhook", "", "This is the url of the general Discord Webhook.");
     public ConfigEntry<string> MessagePrefix { get; } = file.Bind("Moderation", "MessagePrefix", "Tickets:", "This is the prefix the ticket message will have.");
 }

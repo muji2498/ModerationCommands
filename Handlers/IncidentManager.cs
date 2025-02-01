@@ -57,7 +57,7 @@ public class IncidentManager
         var message = $"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({PlayerUtils.GetSteamId(player)})` - ";
         message += $"Killed: `{unit.unitName}` | Incidents Count ({damageString}): `{incidents}`";
         
-        DiscordWebhookHandler.SendToWebhook(message);
+        ModerationPlugin.FriendlyFireLogs.SendToWebhook(message);
     }
 
     public static int GetIncidentCount(Player damager, bool playerIncidents)
