@@ -1,5 +1,6 @@
 ﻿using CommandMod;
 using CommandMod.CommandHandler;
+using CommandMod.Extensions;
 using Moderation.Handlers;
 using Moderation.Utils;
 
@@ -13,7 +14,7 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.Enabled.Value ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire true|false. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire true|false. Current Value: {currentValue}");
             return;
         }
         
@@ -21,7 +22,7 @@ public class FriendlyFireCommands
         {
             ModerationPlugin.Config.Enabled.Value = friendlyFireToggle;
             var what = friendlyFireToggle ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire: {what}", context.Player, false);
+            context.Player.SendChatMessage($"Friendly-fire: {what}");
         }
     }
 
@@ -31,7 +32,7 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.FriendlyFirePlayerKick.Value ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.player true|false. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire.player true|false. Current Value: {currentValue}");
             return;
         }
         
@@ -39,7 +40,7 @@ public class FriendlyFireCommands
         {
             ModerationPlugin.Config.FriendlyFirePlayerKick.Value = toggle;
             var what = toggle ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Player friendly-fire: {what}", context.Player, false);
+            context.Player.SendChatMessage($"Player friendly-fire: {what}");
         }
     }
 
@@ -49,7 +50,7 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.FriendlyFireUnitKick.Value ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.unit true|false. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire.unit true|false. Current Value: {currentValue}");
             return;
         }
         
@@ -57,7 +58,7 @@ public class FriendlyFireCommands
         {
             ModerationPlugin.Config.FriendlyFireUnitKick.Value = toggle;
             var what = toggle ? "Enabled" : "Disabled";
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Unit friendly-fire: {what}", context.Player, false);
+            context.Player.SendChatMessage($"Unit friendly-fire: {what}");
         }
     }
 
@@ -67,14 +68,14 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.UnitMaxIncidents.Value;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.unitincidents amount. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire.unitincidents amount. Current Value: {currentValue}");
             return;
         }
         
         if (int.TryParse(args[0], out int amount))
         {
             ModerationPlugin.Config.UnitMaxIncidents.Value = amount;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire max incidents set to {amount}", context.Player, false);
+            context.Player.SendChatMessage($"Friendly-fire max incidents set to {amount}");
         }
     }
     
@@ -84,14 +85,14 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.PlayerMaxIncidents.Value;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.playerincidents amount. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire.playerincidents amount. Current Value: {currentValue}");
             return;
         }
         
         if (int.TryParse(args[0], out int amount))
         {
             ModerationPlugin.Config.PlayerMaxIncidents.Value = amount;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire max incidents set to {amount}", context.Player, false);
+            context.Player.SendChatMessage($"Friendly-fire max incidents set to {amount}");
         }
     }
     
@@ -101,14 +102,14 @@ public class FriendlyFireCommands
         if (args.Length < 1)
         {
             var currentValue = ModerationPlugin.Config.FriendlyUnitThreshold.Value;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Usage: friendlyfire.unitthreshold amount. Current Value: {currentValue}", context.Player, false);
+            context.Player.SendChatMessage($"Usage: friendlyfire.unitthreshold amount. Current Value: {currentValue}");
             return;
         }
         
         if (int.TryParse(args[0], out int amount))
         {
             ModerationPlugin.Config.FriendlyUnitThreshold.Value = amount;
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, $"Friendly-fire unit threshold set to {amount}", context.Player, false);
+            context.Player.SendChatMessage($"Friendly-fire unit threshold set to {amount}");
         }
     }
 
@@ -116,6 +117,6 @@ public class FriendlyFireCommands
     public static void FriendlyFireMaxReset(string[] args, CommandObjects context)
     {
         IncidentManager.ClearIncidents();
-        Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Incidents cleared", context.Player, false);
+        context.Player.SendChatMessage("Incidents cleared");
     }
 }

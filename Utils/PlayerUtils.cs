@@ -45,7 +45,7 @@ public class PlayerUtils
         {
             shouldKick = true;
         }
-        else
+        else if (!isPlayerDamage)
         {
             // send this to discord when under threshold
             if (unitIncidents <= unitThreshold)
@@ -74,8 +74,8 @@ public class PlayerUtils
         var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var steamId = GetSteamId(damagerPlayer);
         var typeString = isPlayerDamage ? "Player" : "Unit";
-        var message = $"[<t:{unixTimestamp}:F>] Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for {typeString} player `{victimUnit.unitName}`.";
-        DiscordWebhookHandler.SendToWebhook(message);
+        var message = $"[<t:{unixTimestamp}:F>] Player: `{damagerPlayer.PlayerName}({steamId})` has been kicked for killing {typeString} `{victimUnit.unitName}`.";
+        ModerationPlugin.FriendlyFireLogs.SendToWebhook(message);
         ModerationPlugin.Logger.LogInfo($"Player {damagerPlayer.PlayerName} was kicked for hitting the friendly fire limit. Incident count: {incidentCount}");
         _kickedPlayers.Add(damagerPlayer);
     }
@@ -91,7 +91,7 @@ public class PlayerUtils
     {
         var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var steamId = GetSteamId(player);
-        DiscordWebhookHandler.SendToWebhook($"[<t:{unixTimestamp}:F>] `{player.PlayerName}({steamId})` killed a friendly unit: `{victim.unitName}` | `{IncidentManager.GetIncidentCount(player, false)}/{ModerationPlugin.Config.FriendlyUnitThreshold.Value}`");
+        ModerationPlugin.FriendlyFireLogs.SendToWebhook($"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` - Killed: `{victim.unitName}` | `{IncidentManager.GetIncidentCount(player, false)}/{ModerationPlugin.Config.FriendlyUnitThreshold.Value}`");
     }
 
     public static void ClearKickedPlayers()

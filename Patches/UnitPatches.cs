@@ -12,7 +12,6 @@ public class UnitPatches
     {
         static bool Prefix(Unit __instance)
         {
-            
             if (!ModerationPlugin.Config.Enabled.Value) return true;
             if (__instance == null) return true;
             
@@ -27,12 +26,13 @@ public class UnitPatches
             var killedUnit = UnitRegistry.GetPersistentUnit(__instance.persistentID);
             var highestDamagerUnit = UnitRegistry.GetPersistentUnit(highestDamager.Key);
             if (highestDamagerUnit == null) return true;
+            if (highestDamagerUnit.player == null) return true; // ignore if the unit was killed by another unit
 
             // not the same hq so move on
             if (highestDamagerUnit.HQ != killedUnit.HQ) return true;
             
             var damagerPlayer = highestDamagerUnit.player;
-            var isPlayerDamage = killedUnit.player != null;
+            var isPlayerDamage = (killedUnit.player != null || __instance is Aircraft);
             PlayerUtils.ShouldKick(isPlayerDamage, damagerPlayer, __instance);
             return true;
         }

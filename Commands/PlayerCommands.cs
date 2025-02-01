@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CommandMod;
 using CommandMod.CommandHandler;
+using CommandMod.Extensions;
 using Moderation.Handlers;
 using NuclearOption.Networking;
 
@@ -13,7 +14,7 @@ public class PlayerCommands
     {
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(arg2.Player.Owner, "Usage: [kick playername|steamid]", arg2.Player, false);
+            arg2.Player.SendChatMessage("Usage: [kick playername|steamid]");
             return;
         }
         var callingPlayer = arg2.Player;
@@ -21,7 +22,7 @@ public class PlayerCommands
         var playersToKick = CommandMod.Utils.IdentifyPlayer(targetPlayer);
         if (playersToKick == null || playersToKick.Count == 0)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Player not found.", callingPlayer, false);
+            arg2.Player.SendChatMessage("Player not found.");
             return;
         }
 
@@ -29,7 +30,7 @@ public class PlayerCommands
         {
             var playerToKick = playersToKick.First();
             NetworkManagerNuclearOption.i.KickPlayerAsync(playerToKick);
-            Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, $"Player {playerToKick.PlayerName} kicked.", callingPlayer, false);
+            arg2.Player.SendChatMessage($"Player {playerToKick.PlayerName} kicked.");
             return;
         }
         
@@ -41,7 +42,7 @@ public class PlayerCommands
     {
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: [ban playername|steamid]", context.Player, false);
+            context.Player.SendChatMessage("Usage: [ban playername|steamid]");
             return;
         }
 
@@ -51,7 +52,7 @@ public class PlayerCommands
         var playersToBan = CommandMod.Utils.IdentifyPlayer(targetPlayer);
         if (playersToBan == null || playersToBan.Count == 0)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Player not found.", callingPlayer, false);
+            context.Player.SendChatMessage("Player not found.");
             return;
         }
 
@@ -70,7 +71,7 @@ public class PlayerCommands
     {
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Usage: [unban steamid]", context.Player, false);
+            context.Player.SendChatMessage("Usage: [unban steamid]");
             return;
         }
 
@@ -79,7 +80,7 @@ public class PlayerCommands
 
         if (!ulong.TryParse(targetPlayer, out var steamId))
         {
-            Wrapper.ChatManager.TargetReceiveMessage(context.Player.Owner, "Please use a numeric value.", context.Player, false);
+            context.Player.SendChatMessage("Please use a numeric value.");
             return;
         }
         PlayerModerationHandler.UnbanPlayer(steamId, callingPlayer);
@@ -91,7 +92,7 @@ public class PlayerCommands
         var callingPlayer = context.Player;
         if (args.Length < 1)
         {
-            Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Usage: [select number|cancel]", callingPlayer, false);
+            context.Player.SendChatMessage("Usage: [select number|cancel]");
             return;
         }
 
@@ -99,8 +100,7 @@ public class PlayerCommands
         {
             if (!PlayerModerationHandler.PendingSelections.TryGetValue(callingPlayer, out var pendingSelection))
             {
-                Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner,
-                    "No selections. Use [kick|ban] commands first.", callingPlayer, false);
+                context.Player.SendChatMessage("No selections. Use [kick|ban] commands first.");
                 return;
             }
             
@@ -108,16 +108,14 @@ public class PlayerCommands
             if (argument == "cancel")
             {
                 PlayerModerationHandler.PendingSelections.Remove(callingPlayer);
-                Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Selection cancelled.", callingPlayer,
-                    false);
+                context.Player.SendChatMessage("Selection cancelled.");
                 return;
             }
 
             if (!int.TryParse(argument, out int number) || number < 0 || number > pendingSelection.Players.Count)
             {
                 // number passed in
-                Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, "Invalid selection number.",
-                    callingPlayer, false);
+                context.Player.SendChatMessage("Invalid selection number.");
                 return;
             }
 
@@ -126,8 +124,7 @@ public class PlayerCommands
             {
                 case "kick":
                     NetworkManagerNuclearOption.i.KickPlayerAsync(playerToSelect);
-                    Wrapper.ChatManager.TargetReceiveMessage(callingPlayer.Owner, $"Player {playerToSelect.PlayerName} kicked.",
-                        callingPlayer, false);
+                    context.Player.SendChatMessage($"Player {playerToSelect.PlayerName} kicked.");
                     break;
                 case "ban":
                     PlayerModerationHandler.BanPlayer(playerToSelect.SteamID, callingPlayer);

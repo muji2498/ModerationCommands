@@ -9,21 +9,24 @@ namespace Moderation.Handlers;
 
 public class DiscordWebhookHandler
 {
-    private static readonly Queue<string> Messages = new();
-    private static readonly object MessagesLock = new();
+    private string DiscordWebhookUrl = "";
     
-    private static readonly Timer BatchTimer;
+    private readonly Queue<string> Messages = new();
+    private readonly object MessagesLock = new();
+    
+    private Timer BatchTimer;
     private const int BatchSize = 10;
     private const int BatchDelay = 2000;
 
-    static DiscordWebhookHandler()
+    public DiscordWebhookHandler(string url)
     {
+        DiscordWebhookUrl = url;
         BatchTimer = new Timer(SendBatch, null, BatchDelay, BatchDelay);
     }
     
-    public static void SendToWebhook(string message)
+    public void SendToWebhook(string message)
     {
-        if (string.IsNullOrEmpty(ModerationPlugin.Config.DiscordWebhook.Value))
+        if (string.IsNullOrEmpty(DiscordWebhookUrl))
         {
             return;
         }
@@ -39,7 +42,7 @@ public class DiscordWebhookHandler
         }
     }
     
-    private static async void SendBatch(object state)
+    private async void SendBatch(object state)
     {
         List<string> batchMessages = null;
 
@@ -72,7 +75,7 @@ public class DiscordWebhookHandler
             try
             {
                 var response = await client.PostAsync(
-                    ModerationPlugin.Config.DiscordWebhook.Value, 
+                    DiscordWebhookUrl, 
                     new StringContent(jsonPayload, UTF8, "application/json")
                 );
 
