@@ -27,7 +27,16 @@ public class UnitPatches
             var highestDamagerUnit = UnitRegistry.GetPersistentUnit(highestDamager.Key);
             if (highestDamagerUnit == null) return true;
             if (highestDamagerUnit.player == null) return true; // ignore if the unit was killed by another unit
-
+            if (__instance.unitName.ToLower().Contains("container"))
+            {
+                __instance.TryGetComponent<Container>(out var containerComponent);
+                if (containerComponent != null)
+                {
+                    // skip if the highest killer player owns the container
+                    if (containerComponent.ownerID == highestDamagerUnit.id) return true;
+                } 
+            }
+            
             // not the same hq so move on
             if (highestDamagerUnit.HQ != killedUnit.HQ) return true;
             
