@@ -24,7 +24,7 @@ public class UnitPatches
             
             // the highest damager and the killed persons unit
             if(!UnitRegistry.TryGetPersistentUnit(__instance.persistentID, out var killedUnit)) return false;
-            if (!UnitRegistry.TryGetPersistentUnit(__instance.persistentID, out var highestDamagerUnit)) return false;
+            if (!UnitRegistry.TryGetPersistentUnit(highestDamager.Key, out var highestDamagerUnit)) return false;
             if (highestDamagerUnit == null) return true;
             if (highestDamagerUnit.player == null) return true; // ignore if the unit was killed by another unit
             if (__instance.unitName.ToLower().Contains("container"))
