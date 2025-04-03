@@ -23,8 +23,8 @@ public class UnitPatches
             if (highestDamager.Value == 0) return true;
             
             // the highest damager and the killed persons unit
-            var killedUnit = UnitRegistry.GetPersistentUnit(__instance.persistentID);
-            var highestDamagerUnit = UnitRegistry.GetPersistentUnit(highestDamager.Key);
+            if(!UnitRegistry.TryGetPersistentUnit(__instance.persistentID, out var killedUnit)) return false;
+            if (!UnitRegistry.TryGetPersistentUnit(__instance.persistentID, out var highestDamagerUnit)) return false;
             if (highestDamagerUnit == null) return true;
             if (highestDamagerUnit.player == null) return true; // ignore if the unit was killed by another unit
             if (__instance.unitName.ToLower().Contains("container"))
@@ -38,7 +38,7 @@ public class UnitPatches
             }
             
             // not the same hq so move on
-            if (highestDamagerUnit.HQ != killedUnit.HQ) return true;
+            if (highestDamagerUnit.GetHQ() != killedUnit.GetHQ()) return true;
             
             var damagerPlayer = highestDamagerUnit.player;
             var isPlayerDamage = (killedUnit.player != null || __instance is Aircraft);
