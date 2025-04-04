@@ -26,11 +26,18 @@ public class ChatManagerPatch
         {
             if (SafeShouldInvokeLocally(__instance, RpcTarget.Player, _, false))
             {
-                var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-                var steamId = PlayerUtils.GetSteamId(player);
-                var discordMessage = $"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` sent: {message}";
-                ModerationPlugin.ModerationLogs.SendToWebhook(discordMessage);
-                return true;
+                try
+                {
+                    var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                    var steamId = PlayerUtils.GetSteamId(player);
+                    var discordMessage = $"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` sent: {message}";
+                    ModerationPlugin.ModerationLogs.SendToWebhook(discordMessage);
+                    return true;
+                }
+                catch
+                {
+                    return true;
+                }
             }
 
             return false;

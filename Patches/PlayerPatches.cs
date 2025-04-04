@@ -11,6 +11,8 @@ public class PlayerPatches
     {
         static void Postfix(Player __instance)
         {
+            if (!ModerationPlugin.Config.PlayerJoinLeaveMessages.Value) return;
+            
             var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
             var steamId = PlayerUtils.GetSteamId(__instance);
             var discordMessage = $"[<t:{unixTimestamp}:F>] Player: `{__instance.PlayerName}({steamId})` joined the server.";
@@ -23,6 +25,8 @@ public class PlayerPatches
     {
         static void Postfix(Player __instance)
         {
+            if (!ModerationPlugin.Config.PlayerJoinLeaveMessages.Value) return;
+            
             var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
             var steamId = PlayerUtils.GetSteamId(__instance);
             var discordMessage = $"[<t:{unixTimestamp}:F>] Player: `{__instance.PlayerName}({steamId})` left the server.";
