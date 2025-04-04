@@ -8,6 +8,7 @@ namespace Moderation.Patches;
 public class UnitPatches
 {
     [HarmonyPatch(typeof(Unit), nameof(Unit.ReportKilled))]
+    [HarmonyWrapSafe]
     public class ReportKilled
     {
         static bool Prefix(Unit __instance)
