@@ -5,7 +5,7 @@ using Moderation.Handlers;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "2.0.6")]
+[BepInPlugin("me.muj.moderation", "Moderation", "2.0.7")]
 [BepInDependency("me.muj.commandmod", "1.0.9")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
@@ -15,6 +15,7 @@ public partial class ModerationPlugin : BaseUnityPlugin
 
     public static DiscordWebhookHandler FriendlyFireLogs;
     public static DiscordWebhookHandler ModerationLogs;
+    public static DiscordWebhookHandler TicketLogs;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public partial class ModerationPlugin : BaseUnityPlugin
 
         FriendlyFireLogs = new DiscordWebhookHandler(Config.FriendlyFireWebhook.Value);
         ModerationLogs = new DiscordWebhookHandler(Config.ModerationWebhook.Value);
+        TicketLogs = new DiscordWebhookHandler(Config.TicketWebhook.Value);
         
         // Plugin startup logic
         Logger = base.Logger;

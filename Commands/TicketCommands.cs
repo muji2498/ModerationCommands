@@ -36,6 +36,6 @@ public class TicketCommands
         if (ModerationPlugin.Config.SendTicketsToFriendlyFireLogs.Value)
             ModerationPlugin.FriendlyFireLogs.SendToWebhook(message);
         else
-            ModerationPlugin.ModerationLogs.SendToWebhook(message);
+            ModerationPlugin.TicketLogs.SendToWebhook(message);
     }
 }
