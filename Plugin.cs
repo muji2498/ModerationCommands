@@ -5,8 +5,8 @@ using Moderation.Handlers;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "2.0.5")]
-[BepInDependency("me.muj.commandmod")]
+[BepInPlugin("me.muj.moderation", "Moderation", "2.0.6")]
+[BepInDependency("me.muj.commandmod", "1.0.9")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
     internal static new ManualLogSource Logger;
