@@ -33,6 +33,9 @@ public class TicketCommands
         ModerationPlugin.Logger.LogInfo($"Sending Ticket: {message} from {callingPlayer.PlayerName}");
         objects.Player.SendChatMessage("Ticket sent!");
 
-        ModerationPlugin.ModerationLogs.SendToWebhook(message);
+        if (ModerationPlugin.Config.SendTicketsToFriendlyFireLogs.Value)
+            ModerationPlugin.FriendlyFireLogs.SendToWebhook(message);
+        else
+            ModerationPlugin.ModerationLogs.SendToWebhook(message);
     }
 }

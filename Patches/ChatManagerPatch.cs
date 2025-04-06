@@ -2,10 +2,9 @@
 using HarmonyLib;
 using Mirage;
 using Mirage.RemoteCalls;
-using Moderation;
 using Moderation.Utils;
 
-namespace CommandMod.Patches;
+namespace Moderation.Patches;
 
 public class ChatManagerPatch
 {
