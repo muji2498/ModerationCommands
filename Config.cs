@@ -17,7 +17,8 @@ public class Config(ConfigFile file)
     // Discord Webhooks
     public ConfigEntry<string> FriendlyFireWebhook { get; } = file.Bind("Moderation", "FriendlyFireWebhook", "", "This is the url of the friendly fire Discord Webhook.");
     public ConfigEntry<string> ModerationWebhook { get; } = file.Bind("Moderation", "ModerationWebhook", "", "This is the url of the general Discord Webhook.");
+    public ConfigEntry<string> TicketWebhook { get; } = file.Bind("Moderation", "TicketWebhook", "", "This is the url of the ticket Discord Webhook.");
     public ConfigEntry<string> MessagePrefix { get; } = file.Bind("Moderation", "MessagePrefix", "Tickets:", "This is the prefix the ticket message will have.");
     public ConfigEntry<bool> PlayerJoinLeaveMessages { get;  } = file.Bind("Moderation", "PlayerJoinLeaveMessages", true, "Whether player join/leave messages should be sent to webhook.");
-    public ConfigEntry<bool> SendTicketsToFriendlyFireLogs { get; } = file.Bind("Moderation", "SendTicketsToFriendlyFireLogs", false, "Whether friendly fire logs should be sent to friendly fire webhook.");
+    public ConfigEntry<bool> SendTicketsToFriendlyFireLogs { get; } = file.Bind("Moderation", "SendTicketsToFriendlyFireLogs", false, "Whether ticket logs should be sent to friendly fire webhook or to ticket webhook.");
 }
