@@ -10,7 +10,7 @@ public class IncidentManager
     private static readonly Dictionary<Player, IncidentData> _incidents = new();
     private static readonly object _lock = new();
 
-    public static (int playerIncidents, int unitIncidents) RecordKillIncident(bool isPlayerDamage, Player damager, Unit unit)
+    public static (int playerIncidents, int unitIncidents) RecordKillIncident(bool isPlayerKill, Player damager, Unit unit)
     {
         if (damager == null || unit == null)
         {
@@ -33,7 +33,7 @@ public class IncidentManager
             var incidentData = _incidents[damager];
             incidentData.LastReported = DateTime.UtcNow;
 
-            if (isPlayerDamage)
+            if (isPlayerKill)
             {
                 incidentData.PlayerIncidents++;
                 SendIncidentReport(damager, unit, incidentData.PlayerIncidents, true);
@@ -42,16 +42,16 @@ public class IncidentManager
             {
                 incidentData.UnitIncidents++;
                 if (incidentData.UnitIncidents > ModerationPlugin.Config.FriendlyUnitThreshold.Value) // dont send incident reports when below threshold 
-                    SendIncidentReport(damager, unit, incidentData.UnitIncidents, isPlayerDamage);
+                    SendIncidentReport(damager, unit, incidentData.UnitIncidents, false);
             }
             
             return (incidentData.PlayerIncidents, incidentData.UnitIncidents);
         }
     }
 
-    private static void SendIncidentReport(Player player, Unit unit, int incidents, bool playerDamage)
+    private static void SendIncidentReport(Player player, Unit unit, int incidents, bool playerKill)
     {
-        var damageString = playerDamage ? "PlayerDamage" : "UnitDamage";
+        var damageString = playerKill ? "PlayerKill" : "UnitKill";
         
         var unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
         var message = $"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({PlayerUtils.GetSteamId(player)})` - ";

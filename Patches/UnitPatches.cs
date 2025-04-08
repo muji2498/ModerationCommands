@@ -37,14 +37,27 @@ public class UnitPatches
                     if (containerComponent.ownerID == highestDamagerUnit.id) return true;
                 } 
             }
+            // skip if afv6 aa
+            if (IsAFV6AAKilled(__instance)) return true;
             
             // not the same hq so move on
             if (highestDamagerUnit.GetHQ() != killedUnit.GetHQ()) return true;
             
             var damagerPlayer = highestDamagerUnit.player;
-            var isPlayerDamage = (killedUnit.player != null || __instance is Aircraft);
-            PlayerUtils.ShouldKick(isPlayerDamage, damagerPlayer, __instance);
+            var isPlayerKilled = (killedUnit.player != null || __instance is Aircraft);
+            PlayerUtils.ShouldKick(isPlayerKilled, damagerPlayer, __instance);
             return true;
+        }
+        
+        // weird bug where afv6 ss count as player kills, possible game bug where they get tracked as players or aircrafts?? 
+        private static bool IsAFV6AAKilled(Unit __instance)
+        {
+            if (!ModerationPlugin.Config.AFV6AAPatch.Value) return false;
+            if (__instance.unitName.ToLower().Contains("afv6 aa"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

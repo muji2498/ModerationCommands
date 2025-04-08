@@ -13,6 +13,7 @@ public class Config(ConfigFile file)
     public ConfigEntry<int> UnitMaxIncidents { get; } = file.Bind("Moderation", "UnitMaxIncidents", 10, "Number of incidents before player is kicked.");
     public ConfigEntry<int> PlayerMaxIncidents { get; } = file.Bind("Moderation", "PlayerMaxIncidents", 1, "Number of incidents before player is kicked.");
     public ConfigEntry<int> FriendlyUnitThreshold { get; } = file.Bind("Moderation", "FriendlyUnitThreshold", 5, "Number of units a player can kill before a incident is reported.");
+    public ConfigEntry<bool> AFV6AAPatch { get; } = file.Bind("Moderation", "AFV6AAPatch", true, "If enabled, plugin will skip checks for AFV6 AA unit.");
     
     // Discord Webhooks
     public ConfigEntry<string> FriendlyFireWebhook { get; } = file.Bind("Moderation", "FriendlyFireWebhook", "", "This is the url of the friendly fire Discord Webhook.");

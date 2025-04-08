@@ -15,16 +15,16 @@ public class PlayerUtils
         return callingPlayer.Owner.Address is SteamEndPoint endpoint ? endpoint.Connection.SteamID.m_SteamID : 0;
     }
     
-    public static void ShouldKick(bool isPlayerDamage, Player damagerPlayer, Unit victimUnit)
+    public static void ShouldKick(bool isPlayerKilled, Player damagerPlayer, Unit victimUnit)
     {
         if (_kickedPlayers.Contains(damagerPlayer)) return;
         
-        var isKickEnabled = isPlayerDamage 
+        var isKickEnabled = isPlayerKilled 
             ? ModerationPlugin.Config.FriendlyFirePlayerKick.Value 
             : ModerationPlugin.Config.FriendlyFireUnitKick.Value;
         if (!isKickEnabled) return;
         
-        var (playerIncidents, unitIncidents) = IncidentManager.RecordKillIncident(isPlayerDamage, damagerPlayer, victimUnit);
+        var (playerIncidents, unitIncidents) = IncidentManager.RecordKillIncident(isPlayerKilled, damagerPlayer, victimUnit);
         
         var maxPlayerIncidents = ModerationPlugin.Config.PlayerMaxIncidents.Value;
         var maxUnitIncidents = ModerationPlugin.Config.UnitMaxIncidents.Value;
@@ -45,7 +45,7 @@ public class PlayerUtils
         {
             shouldKick = true;
         }
-        else if (!isPlayerDamage)
+        else if (!isPlayerKilled)
         {
             // send this to discord when under threshold
             if (unitIncidents <= unitThreshold)
@@ -58,10 +58,10 @@ public class PlayerUtils
         }
         else
         {
-            var incidentCount = isPlayerDamage
+            var incidentCount = isPlayerKilled
                 ? playerIncidents
                 : unitIncidents;
-            LogIncidentToConsole(damagerPlayer, incidentCount, isPlayerDamage);
+            LogIncidentToConsole(damagerPlayer, incidentCount, isPlayerKilled);
         }
     }
     
