@@ -5,7 +5,7 @@ using Moderation.Handlers;
 
 namespace Moderation;
 
-[BepInPlugin("me.muj.moderation", "Moderation", "2.0.7")]
+[BepInPlugin("me.muj.moderation", "Moderation", "2.0.8")]
 [BepInDependency("me.muj.commandmod", "1.0.9")]
 public partial class ModerationPlugin : BaseUnityPlugin
 {
