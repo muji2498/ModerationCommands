@@ -2,6 +2,7 @@
 using CommandMod;
 using HarmonyLib;
 using Moderation.Data;
+using NuclearOption.Networking;
 
 namespace Moderation.Handlers;
 

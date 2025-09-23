@@ -1,4 +1,5 @@
 ﻿using System;
+using NuclearOption.Networking;
 
 namespace Moderation.Data;
 
