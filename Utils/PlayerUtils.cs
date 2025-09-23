@@ -91,7 +91,7 @@ public class PlayerUtils
     {
         var unixTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         var steamId = GetSteamId(player);
-        ModerationPlugin.FriendlyFireLogs.SendToWebhook($"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` - Killed: `{victim.unitName}` | `{IncidentManager.GetIncidentCount(player, false)}/{ModerationPlugin.Config.FriendlyUnitThreshold.Value}`");
+        ModerationPlugin.FriendlyFireLogs.SendToWebhook($"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` - Killed: `{victim.unitName}` | `{IncidentManager.GetIncidentCount(player, false)}/{ModerationPlugin.Config.FriendlyUnitThreshold.Value}` Units Threshold");
     }
 
     public static void ClearKickedPlayers()

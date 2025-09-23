@@ -16,7 +16,7 @@ public class UnitPatches
             if (!ModerationPlugin.Config.Enabled.Value) return true;
             if (__instance == null) return true;
             
-            var damageCredit = (Dictionary<int, float>) AccessTools.Field(typeof(Unit), "damageCredit").GetValue(__instance);
+            var damageCredit = (Dictionary<PersistentID, float>) AccessTools.Field(typeof(Unit), "damageCredit").GetValue(__instance);
             if (damageCredit == null || damageCredit.Count == 0) return true;
             
             // sort by the highest value
