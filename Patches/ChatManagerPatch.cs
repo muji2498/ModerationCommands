@@ -2,13 +2,14 @@
 using HarmonyLib;
 using Mirage;
 using Moderation.Utils;
+using NuclearOption.Chat;
 using NuclearOption.Networking;
 
 namespace Moderation.Patches;
 
 public class ChatManagerPatch
 {
-    [HarmonyPatch(typeof(ChatManager), "UserCode_CmdSendChatMessage_1323305531")]
+    [HarmonyPatch(typeof(ChatManager), "UserCode_CmdSendChatMessage_-456754112")]
     [HarmonyWrapSafe]
     public class TargetReceiveMessage
     {
