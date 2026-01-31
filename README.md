@@ -1,7 +1,7 @@
 ﻿# Moderation Commands - Nuclear Option
 
 ## Bepinex Version
-This mod requires bepinex version [5.4.23.2](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.2) and NewtonsoftJson
+This mod requires bepinex version [latest](https://github.com/BepInEx/BepInEx/releases/latest), [CommandMod](https://github.com/muji2498/CommandMod/releases/latest) and NewtonsoftJson.
 
 ## Notes
 The mod will reply back showing the calling players name, i intend to replace this with something like `Server` or `Host`, this could be a configurable name aswell.

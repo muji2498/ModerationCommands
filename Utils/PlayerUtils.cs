@@ -12,7 +12,8 @@ public class PlayerUtils
     
     public static ulong GetSteamId(Player callingPlayer)
     {
-        return callingPlayer.Owner.Address is SteamEndPoint endpoint ? endpoint.Connection.SteamID.m_SteamID : 0;
+        var steamConnection = callingPlayer.Owner.ConnectionHandle as SteamConnection;
+        return steamConnection == null ? 0 : steamConnection.SteamID.m_SteamID;
     }
     
     public static void ShouldKick(bool isPlayerKilled, Player damagerPlayer, Unit victimUnit)
