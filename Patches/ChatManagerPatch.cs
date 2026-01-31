@@ -23,6 +23,7 @@ public class ChatManagerPatch
             var steamId = PlayerUtils.GetSteamId(player);
             var discordMessage =
                 $"[<t:{unixTimestamp}:F>] Player: `{player.PlayerName}({steamId})` sent: {message}";
+            discordMessage = DiscordUtils.Sanitise(discordMessage);
             ModerationPlugin.ModerationLogs.SendToWebhook(discordMessage);
         }
     }
